@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-ecommerce-api",
+  "version": "1.0.0",
+  "description": "NodeJS E-commerce API",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "API",
+    "NODEJS"
+  ],
+  "author": "Abhav Thakur",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.4",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.3",
+    "nodemon": "^3.0.1"
+  }
+}
