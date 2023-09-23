@@ -7,7 +7,13 @@ import {
   websiteNotFound,
 } from '../middlewares/globalErrHandler.js';
 // Routers import
-import { categoryRouter, productRouter, userRouter } from '../routes/index.js';
+
+import {
+  brandRouter,
+  categoryRouter,
+  productRouter,
+  userRouter,
+} from '../routes/index.js';
 
 dotenv.config();
 // db connect
@@ -23,6 +29,7 @@ const version = '/api/v1';
 app.use(`${version}/users`, userRouter);
 app.use(`${version}/products`, productRouter);
 app.use(`${version}/categories`, categoryRouter);
+app.use(`${version}/brands`, brandRouter);
 
 // error handler
 app.use(websiteNotFound);

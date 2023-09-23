@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import Category from '../model/Category.js';
-import Product from '../model/Product.js';
+import { Category, Product } from '../model/index.js';
 
 //@desc Create new Product
 //@route POST /api/v1/products
