@@ -48,6 +48,8 @@ export const createProductControllers = asyncHandler(async (req, res) => {
 //@access Public
 export const getAllProductsControllers = asyncHandler(async (req, res) => {
   const query = {};
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10; // Default limit is 10 items per page
 
   const queryParams = {
     name: req.query.name,
@@ -61,18 +63,44 @@ export const getAllProductsControllers = asyncHandler(async (req, res) => {
   // Filter out empty query parameters
   Object.keys(queryParams).forEach((key) => {
     if (queryParams[key]) {
-      query[key] = { $regex: queryParams[key], $options: 'i' };
-    }
-    if (key === 'price') {
-      const priceRange = queryParams[key].split('-');
-      query[key] = { $gte: priceRange[0], $lte: priceRange[1] };
+      if (key === 'price') {
+        const priceRange = queryParams[key].split('-');
+        query[key] = {
+          $gte: parseFloat(priceRange[0]), // Convert to float if needed
+          $lte: parseFloat(priceRange[1]), // Convert to float if needed
+        };
+      } else {
+        query[key] = { $regex: queryParams[key], $options: 'i' };
+      }
     }
   });
 
-  const products = await Product.find(query);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const total = await Product.countDocuments();
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit,
+    };
+  }
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit,
+    };
+  }
+
+  const products = await Product.find(query).skip(startIndex).limit(limit);
 
   res.status(200).json({
     success: true,
+    total,
+    result: products.length,
+    pagination,
     data: products,
   });
 });
