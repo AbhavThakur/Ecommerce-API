@@ -1,9 +1,12 @@
 import bcrypt from 'bcryptjs/dist/bcrypt.js';
 import asyncHandler from 'express-async-handler';
+
 import User from '../model/User.js';
-import generateToken from '../utils/generateToken.js';
-import getTokenFromHeader from '../utils/getTokenFromHeader.js';
-import verifyToken from '../utils/verifyToken.js';
+import {
+  generateToken,
+  getTokenFromHeader,
+  verifyToken,
+} from '../utils/index.js';
 
 /**
  * Registers a new user.
@@ -55,7 +58,7 @@ export const loginUserControllers = asyncHandler(async (req, res) => {
 export const userProfileControllers = asyncHandler(async (req, res) => {
   const token = getTokenFromHeader(req);
   const verified = verifyToken(token);
-  console.log(verified);
+
   res.status(200).json({
     status: 'success',
     message: 'User profile',

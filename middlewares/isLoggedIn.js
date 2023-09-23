@@ -1,5 +1,4 @@
-import getTokenFromHeader from '../utils/getTokenFromHeader.js';
-import verifyToken from '../utils/verifyToken.js';
+import { getTokenFromHeader, verifyToken } from '../utils/index.js';
 
 /**
  * Middleware function to check if a user is logged in.
