@@ -6,7 +6,8 @@ import {
   globalErrorHandler,
   websiteNotFound,
 } from '../middlewares/globalErrHandler.js';
-import { productRouter, userRouter } from '../routes/index.js';
+// Routers import
+import { categoryRouter, productRouter, userRouter } from '../routes/index.js';
 
 dotenv.config();
 // db connect
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 const version = '/api/v1';
 app.use(`${version}/users`, userRouter);
 app.use(`${version}/products`, productRouter);
+app.use(`${version}/categories`, categoryRouter);
 
 // error handler
 app.use(websiteNotFound);
