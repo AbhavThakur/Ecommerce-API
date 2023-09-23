@@ -104,3 +104,72 @@ export const getAllProductsControllers = asyncHandler(async (req, res) => {
     data: products,
   });
 });
+
+//@desc GET Product by ID
+//@route GET /api/v1/products/ID
+//@access Public
+export const getProductByIdControllers = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  res.status(200).json({
+    success: true,
+    message: 'Product found',
+    data: product,
+  });
+});
+
+export const updateProductByIdControllers = asyncHandler(async (req, res) => {
+  const {
+    name,
+    description,
+    brand,
+    category,
+    sizes,
+    colors,
+    user,
+    images,
+    price,
+    totalQty,
+  } = req.body;
+
+  // Update
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      description,
+      brand,
+      category,
+      sizes,
+      colors,
+      user,
+      images,
+      price,
+      totalQty,
+    },
+    { new: true }
+  );
+
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  res.status(200).json({
+    success: true,
+    message: 'Product found',
+    data: product,
+  });
+});
+
+export const deleteProductByIdControllers = asyncHandler(async (req, res) => {
+  const product = await Product.findByIdAndDelete(req.params.id);
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  res.status(200).json({
+    success: true,
+    message: 'Product deleted',
+    data: product,
+  });
+});
