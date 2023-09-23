@@ -7,7 +7,10 @@ export const createCategoryControllers = asyncHandler(async (req, res) => {
   if (category) {
     throw new Error('Category already exists');
   }
-  const newCategory = await Category.create({ name, user: req.userAuthId });
+  const newCategory = await Category.create({
+    name: name.toLowerCase(),
+    user: req.userAuthId,
+  });
   res.status(201).json({
     status: 'success',
     data: {
