@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const CategorySchema = new Schema(
+const ColorSchema = new Schema(
   {
     name: {
       type: String,
@@ -13,19 +13,17 @@ const CategorySchema = new Schema(
       ref: 'User',
       required: true,
     },
-
-    products: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-    ],
+    image: {
+      type: String,
+      default: 'https://picsum.photos/200/300',
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const Category = mongoose.model('Category', CategorySchema);
+const ColorModal = mongoose.model('Color', ColorSchema);
 
-export default Category;
+export default ColorModal;
