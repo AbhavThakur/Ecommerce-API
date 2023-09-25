@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs/dist/bcrypt.js';
 import asyncHandler from 'express-async-handler';
 
-import User from '../model/User.js';
+import { UserModal } from '../model/index.js';
 import {
   generateToken,
   getTokenFromHeader,
@@ -17,13 +17,17 @@ import {
  */
 export const registerUserControllers = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
-  const userExists = await User.findOne({ email });
+  const userExists = await UserModal.findOne({ email });
   if (userExists) {
     throw new Error('User already exists');
   }
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
-  const user = await User.create({ fullName, email, password: hashPassword });
+  const user = await UserModal.create({
+    fullName,
+    email,
+    password: hashPassword,
+  });
 
   res.status(201).json({
     status: 'success',
@@ -42,7 +46,7 @@ export const registerUserControllers = asyncHandler(async (req, res) => {
 export const loginUserControllers = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const checkUser = await User.findOne({ email });
+  const checkUser = await UserModal.findOne({ email });
   if (checkUser && (await bcrypt.compare(password, checkUser.password))) {
     return res.status(200).json({
       status: 'success',
@@ -62,5 +66,6 @@ export const userProfileControllers = asyncHandler(async (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'User profile',
+    data: verified,
   });
 });

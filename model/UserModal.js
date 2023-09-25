@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-
-const Schema = mongoose.Schema;
+import { Modal, Schema } from '../utils/helper.js';
 
 const UserSchema = new Schema(
   {
@@ -69,6 +67,6 @@ const UserSchema = new Schema(
 );
 
 //compile the schema to model
-const User = mongoose.model('User', UserSchema);
+const UserModal = Modal('User', UserSchema);
 
-export default User;
+export default UserModal;

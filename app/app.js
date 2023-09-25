@@ -13,6 +13,7 @@ import {
   categoryRouter,
   colorRouter,
   productRouter,
+  reviewRouter,
   userRouter,
 } from '../routes/index.js';
 
@@ -32,6 +33,7 @@ app.use(`${version}/products`, productRouter);
 app.use(`${version}/categories`, categoryRouter);
 app.use(`${version}/brands`, brandRouter);
 app.use(`${version}/colors`, colorRouter);
+app.use(`${version}/reviews`, reviewRouter);
 
 // error handler
 app.use(websiteNotFound);

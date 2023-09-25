@@ -121,7 +121,10 @@ export const getAllProductsControllers = asyncHandler(async (req, res) => {
     };
   }
 
-  const products = await Product.find(query).skip(startIndex).limit(limit);
+  const products = await Product.find(query)
+    .skip(startIndex)
+    .limit(limit)
+    .populate('reviews');
 
   res.status(200).json({
     success: true,
@@ -136,7 +139,7 @@ export const getAllProductsControllers = asyncHandler(async (req, res) => {
 //@route GET /api/v1/products/ID
 //@access Public
 export const getProductByIdControllers = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate('reviews');
   if (!product) {
     throw new Error('Product not found');
   }
