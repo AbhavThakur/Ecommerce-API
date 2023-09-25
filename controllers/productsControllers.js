@@ -150,6 +150,9 @@ export const getProductByIdControllers = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc Update  Product
+// @route PUT /api/v1/products/ID
+// @access Private/Admin
 export const updateProductByIdControllers = asyncHandler(async (req, res) => {
   const {
     name,
@@ -192,6 +195,9 @@ export const updateProductByIdControllers = asyncHandler(async (req, res) => {
   });
 });
 
+//@desc Delete  Product
+//@route DELETE /api/v1/products/ID/delete
+//@access Private/Admin
 export const deleteProductByIdControllers = asyncHandler(async (req, res) => {
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) {
