@@ -90,6 +90,12 @@ ProductSchema.virtual('averageRating').get(function () {
   return averageRating;
 });
 
+// Product quantity left
+ProductSchema.virtual('quantityLeft').get(function () {
+  const product = this;
+  return product?.totalQty - product?.totalSold;
+});
+
 const Product = mongoose.model('Product', ProductSchema);
 
 export default Product;

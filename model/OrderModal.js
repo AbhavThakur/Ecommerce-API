@@ -1,4 +1,13 @@
-import { Modal, Schema, randomNumber, randomText } from '../utils/helper.js';
+import { Modal, Schema } from '../utils/helper.js';
+
+const randomText = Math.random().toString(36).substring(7).toLocaleUpperCase();
+
+/**
+ * Generates a random number between 1000 and 9999.
+ *
+ * @return {number} The generated random number.
+ */
+const randomNumber = Math.floor(1000 + Math.random() * 9000);
 
 const OrderSchema = new Schema(
   {
@@ -17,10 +26,10 @@ const OrderSchema = new Schema(
       type: Object,
       required: true,
     },
-    orderNum: {
+    orderNumber: {
       type: String,
       unique: true,
-      default: randomText(7) + randomNumber,
+      default: randomText + randomNumber,
     },
     // From stripe
     paymentStatus: {
