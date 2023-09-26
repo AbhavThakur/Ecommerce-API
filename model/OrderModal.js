@@ -28,7 +28,6 @@ const OrderSchema = new Schema(
     },
     orderNumber: {
       type: String,
-      unique: true,
       default: randomText + randomNumber,
     },
     // From stripe

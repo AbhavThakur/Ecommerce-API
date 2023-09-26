@@ -9,8 +9,11 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   if (!userExists) {
     throw new Error('User not found');
   }
-  // Check if orderItems exists
+  if (!userExists?.hasShippingAddress) {
+    throw new Error('User has no shipping address');
+  }
   if (orderItems && orderItems?.length === 0) {
+    // Check if orderItems exists
     throw new Error('No order items');
   }
   // create order
@@ -44,14 +47,23 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   });
 
   //push order Id to user and save
-  user.orders.push(order._id);
-  await user.save();
+  userExists.orders.push(order._id);
+  await userExists.save();
 
   res.json({
     success: true,
     message: 'Order created successfully',
     data: order,
     User: userExists,
+  });
+});
+
+export const getOrdersControllers = asyncHandler(async (req, res) => {
+  const orders = await OrderModal.find({ user: req.userAuthId });
+  res.json({
+    success: true,
+    message: 'Orders found',
+    data: orders,
   });
 });
 

@@ -63,9 +63,47 @@ export const userProfileControllers = asyncHandler(async (req, res) => {
   const token = getTokenFromHeader(req);
   const verified = verifyToken(token);
 
+  const user = await UserModal.findById(req.userAuthId);
   res.status(200).json({
     status: 'success',
     message: 'User profile',
-    data: verified,
+    data: user,
   });
 });
+
+export const updateShippingAddressControllers = asyncHandler(
+  async (req, res) => {
+    const {
+      firstName,
+      lastName,
+      address,
+      city,
+      postalCode,
+      country,
+      province,
+    } = req.body;
+
+    const user = await UserModal.findByIdAndUpdate(
+      req.userAuthId,
+      {
+        shippingAddress: {
+          firstName,
+          lastName,
+          address,
+          city,
+          postalCode,
+          country,
+          province,
+        },
+        hasShippingAddress: true,
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Shipping address updated',
+      data: user,
+    });
+  }
+);
