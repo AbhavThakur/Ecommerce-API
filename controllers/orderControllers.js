@@ -1,5 +1,11 @@
+import dotenv from 'dotenv';
 import asyncHandler from 'express-async-handler';
+
+import Stripe from 'stripe';
 import { OrderModal, Product, UserModal } from '../model/index.js';
+
+dotenv.config();
+const stripe = new Stripe(process.env.STRIPE_KEY);
 
 export const createOrderControllers = asyncHandler(async (req, res) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
@@ -12,8 +18,8 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   if (!userExists?.hasShippingAddress) {
     throw new Error('User has no shipping address');
   }
+  // Check if orderItems exists
   if (orderItems && orderItems?.length === 0) {
-    // Check if orderItems exists
     throw new Error('No order items');
   }
   // create order
@@ -33,11 +39,7 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
     const product = products?.find((product) => {
       return product?._id?.toString() === order?._id?.toString();
     });
-    // const product = products.find().then((product) => {
-    //   // if  productID and ID of product in orderItems are the same
-    //   console.log('first', product);
-    //   return product._id?.toString() === order?._id.toString();
-    // });
+
     if (product) {
       // increase the total sold quantity
       product.totalSold += order.quantity;
@@ -46,18 +48,43 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
     await product.save();
   });
 
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'inr',
+          product_data: {
+            name: 'T-shirt',
+            description: 'best for parties',
+          },
+          unit_amount: 10 * 100,
+        },
+        quantity: 2,
+      },
+    ],
+    mode: 'payment',
+    success_url: 'http://localhost:3000/success',
+    cancel_url: 'http://localhost:3000/cancel',
+  });
+
   //push order Id to user and save
   userExists.orders.push(order._id);
   await userExists.save();
 
-  res.json({
-    success: true,
-    message: 'Order created successfully',
-    data: order,
-    User: userExists,
+  console.log(session.url);
+
+  res.send({
+    url: session.url,
   });
+  // res.json({
+  //   success: true,
+  //   message: 'Order created successfully',
+  //   data: order,
+  //   User: userExists,
+  // });
 });
 
+// get all orders per user
 export const getOrdersControllers = asyncHandler(async (req, res) => {
   const orders = await OrderModal.find({ user: req.userAuthId });
   res.json({
@@ -67,6 +94,7 @@ export const getOrdersControllers = asyncHandler(async (req, res) => {
   });
 });
 
+// delete order by Order ID
 export const deleteOrderControllers = asyncHandler(async (req, res) => {
   const order = await OrderModal.findByIdAndDelete(req.params.id);
   if (!order) {
