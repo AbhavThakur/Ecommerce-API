@@ -37,6 +37,12 @@ app.use(`${version}/brands`, brandRouter);
 app.use(`${version}/colors`, colorRouter);
 app.use(`${version}/reviews`, reviewRouter);
 app.use(`${version}/orders`, orderRouter);
+app.use(`${version}/success`, (req, res) => {
+  res.send('success');
+});
+app.use(`${version}/cancel`, (req, res) => {
+  res.send('cancel');
+});
 
 //Stripe webhooks
 // This is your Stripe CLI webhook secret for testing your endpoint locally.

@@ -59,8 +59,8 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
       },
     ],
     mode: 'payment',
-    success_url: 'http://localhost:3000/success',
-    cancel_url: 'http://localhost:3000/cancel',
+    success_url: 'https://ecommerce-rfxn.onrender.com/api/v1/success',
+    cancel_url: 'https://ecommerce-rfxn.onrender.com/api/v1/cancel',
   });
 
   //push order Id to user and save
