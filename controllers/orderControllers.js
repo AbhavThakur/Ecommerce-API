@@ -53,7 +53,7 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
             name: 'T-shirt',
             description: 'best for parties',
           },
-          unit_amount: 10 * 100,
+          unit_amount: 10 * 1000,
         },
         quantity: 2,
       },

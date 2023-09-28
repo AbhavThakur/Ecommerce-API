@@ -28,24 +28,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// routes
-const version = '/api/v1';
-app.use(`${version}/users`, userRouter);
-app.use(`${version}/products`, productRouter);
-app.use(`${version}/categories`, categoryRouter);
-app.use(`${version}/brands`, brandRouter);
-app.use(`${version}/colors`, colorRouter);
-app.use(`${version}/reviews`, reviewRouter);
-app.use(`${version}/orders`, orderRouter);
-app.use(`${version}/success`, (req, res) => {
-  res.send('success');
-});
-app.use(`${version}/cancel`, (req, res) => {
-  res.send('cancel');
-});
-
 //Stripe webhooks
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
+
 const endpointSecret =
   'whsec_2e06f4ae747b60b5ee4a5df0a3d140feab02764737c0a34752c78693b8501eaf';
 
@@ -66,10 +50,6 @@ app.post(
 
     // Handle the event
     switch (event.type) {
-      case 'payment_intent.created':
-        const paymentIntentCreated = event.data.object;
-        // Then define and call a function to handle the event payment_intent.created
-        break;
       case 'payment_intent.succeeded':
         const paymentIntentSucceeded = event.data.object;
         // Then define and call a function to handle the event payment_intent.succeeded
@@ -83,6 +63,28 @@ app.post(
     response.send();
   }
 );
+
+// routes
+const version = '/api/v1';
+app.use(`${version}/users`, userRouter);
+app.use(`${version}/products`, productRouter);
+app.use(`${version}/categories`, categoryRouter);
+app.use(`${version}/brands`, brandRouter);
+app.use(`${version}/colors`, colorRouter);
+app.use(`${version}/reviews`, reviewRouter);
+app.use(`${version}/orders`, orderRouter);
+
+// global route
+app.use(`${version}/success`, (req, res) => {
+  res.send('success');
+});
+app.use(`${version}/cancel`, (req, res) => {
+  res.send('cancel');
+});
+
+app.use('/', (req, res) => {
+  res.send('hello world');
+});
 
 // error handler
 app.use(websiteNotFound);
