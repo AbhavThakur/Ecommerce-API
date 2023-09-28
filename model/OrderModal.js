@@ -1,4 +1,4 @@
-import { Modal, Schema } from '../utils/helper.js';
+import { Modal, Schema, generateRandomOrderNumber } from '../utils/helper.js';
 
 const randomText = Math.random().toString(36).substring(7).toLocaleUpperCase();
 
@@ -28,7 +28,7 @@ const OrderSchema = new Schema(
     },
     orderNumber: {
       type: String,
-      default: randomText + randomNumber,
+      default: generateRandomOrderNumber(8),
     },
     // From stripe
     paymentStatus: {
