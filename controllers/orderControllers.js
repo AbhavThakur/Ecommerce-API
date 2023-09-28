@@ -1,11 +1,7 @@
-import dotenv from 'dotenv';
 import asyncHandler from 'express-async-handler';
 
-import Stripe from 'stripe';
 import { OrderModal, Product, UserModal } from '../model/index.js';
-
-dotenv.config();
-const stripe = new Stripe(process.env.STRIPE_KEY);
+import { stripe } from '../utils/helper.js';
 
 export const createOrderControllers = asyncHandler(async (req, res) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
@@ -70,8 +66,6 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   //push order Id to user and save
   userExists.orders.push(order._id);
   await userExists.save();
-
-  console.log(session.url);
 
   res.send({
     url: session.url,
