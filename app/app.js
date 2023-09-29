@@ -6,8 +6,9 @@ import {
   globalErrorHandler,
   websiteNotFound,
 } from '../middlewares/globalErrHandler.js';
-// Routers import
 
+import OrderModal from '../model/OrderModal.js';
+// Routers import
 import {
   brandRouter,
   categoryRouter,
@@ -36,7 +37,7 @@ const endpointSecret =
 app.post(
   '/webhook',
   express.raw({ type: 'application/json' }),
-  (request, response) => {
+  async (request, response) => {
     const sig = request.headers['stripe-signature'];
 
     let event;
@@ -48,15 +49,25 @@ app.post(
       return;
     }
 
-    // Handle the event
-    switch (event.type) {
-      case 'payment_intent.succeeded':
-        const paymentIntentSucceeded = event.data.object;
-        // Then define and call a function to handle the event payment_intent.succeeded
-        break;
-      // ... handle other event types
-      default:
-        console.log(`Unhandled event type ${event.type}`);
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      console.log(session);
+
+      const { orderId } = session.metadata;
+      const paymentStatus = session.payment_status;
+      const paymentMethod = session.payment_method_types[0];
+      const totalAmount = session.amount_total / 100;
+      const currency = session.currency;
+
+      await OrderModal.findByIdAndUpdate(JSON.parse(orderId), {
+        paymentStatus,
+        paymentMethod,
+        totalPrice: totalAmount,
+        currency,
+      });
+    } else {
+      console.log(`Unhandled event type ${event.type}`);
     }
 
     // Return a 200 response to acknowledge receipt of the event
@@ -65,7 +76,7 @@ app.post(
 );
 
 // routes
-const version = '/api/v1';
+export const version = '/api/v1';
 app.use(`${version}/users`, userRouter);
 app.use(`${version}/products`, productRouter);
 app.use(`${version}/categories`, categoryRouter);

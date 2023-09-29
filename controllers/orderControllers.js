@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 
+import { version } from '../app/app.js';
 import { OrderModal, Product, UserModal } from '../model/index.js';
 import { stripe } from '../utils/helper.js';
 
@@ -44,23 +45,28 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
     await product.save();
   });
 
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        price_data: {
-          currency: 'inr',
-          product_data: {
-            name: 'T-shirt',
-            description: 'best for parties',
-          },
-          unit_amount: 10 * 1000,
+  const lineItems = orderItems?.map((item) => {
+    return {
+      price_data: {
+        currency: 'inr',
+        product_data: {
+          name: item?.name,
+          description: item?.description,
         },
-        quantity: 2,
+        unit_amount: item?.price * 1000,
       },
-    ],
+      quantity: item?.quantity,
+    };
+  });
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
+    metadata: {
+      orderId: JSON.stringify(order?._id),
+    },
     mode: 'payment',
-    success_url: 'https://ecommerce-rfxn.onrender.com/api/v1/success',
-    cancel_url: 'https://ecommerce-rfxn.onrender.com/api/v1/cancel',
+    success_url: `${req.protocol}://${req.headers.host}${version}/success`,
+    cancel_url: `${req.protocol}://${req.headers.host}${version}/cancel`,
   });
 
   //push order Id to user and save
