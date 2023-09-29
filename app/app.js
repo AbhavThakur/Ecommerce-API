@@ -60,12 +60,16 @@ app.post(
       const totalAmount = session.amount_total / 100;
       const currency = session.currency;
 
-      await OrderModal.findByIdAndUpdate(JSON.parse(orderId), {
-        paymentStatus,
-        paymentMethod,
-        totalPrice: totalAmount,
-        currency,
-      });
+      await OrderModal.findByIdAndUpdate(
+        JSON.parse(orderId),
+        {
+          paymentStatus,
+          paymentMethod,
+          totalPrice: totalAmount,
+          currency,
+        },
+        { new: true }
+      );
     } else {
       console.log(`Unhandled event type ${event.type}`);
     }

@@ -53,7 +53,7 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
           name: item?.name,
           description: item?.description,
         },
-        unit_amount: item?.price * 1000,
+        unit_amount: item?.price * 100,
       },
       quantity: item?.quantity,
     };
