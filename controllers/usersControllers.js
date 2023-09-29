@@ -2,11 +2,7 @@ import bcrypt from 'bcryptjs/dist/bcrypt.js';
 import asyncHandler from 'express-async-handler';
 
 import { UserModal } from '../model/index.js';
-import {
-  generateToken,
-  getTokenFromHeader,
-  verifyToken,
-} from '../utils/index.js';
+import { generateToken } from '../utils/index.js';
 
 /**
  * Registers a new user.
@@ -59,11 +55,10 @@ export const loginUserControllers = asyncHandler(async (req, res) => {
   }
 });
 
+// get user profile
+// ENDPOINT - GET /api/v1/users/profile
 export const userProfileControllers = asyncHandler(async (req, res) => {
-  const token = getTokenFromHeader(req);
-  const verified = verifyToken(token);
-
-  const user = await UserModal.findById(req.userAuthId);
+  const user = await UserModal.findById(req.userAuthId).populate('orders');
   res.status(200).json({
     status: 'success',
     message: 'User profile',
@@ -71,6 +66,8 @@ export const userProfileControllers = asyncHandler(async (req, res) => {
   });
 });
 
+// update shipping address
+// ENDPOINT - PUT /api/v1/users/update/shipping
 export const updateShippingAddressControllers = asyncHandler(
   async (req, res) => {
     const {

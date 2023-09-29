@@ -77,8 +77,8 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     message: 'Order created successfully',
-    data: order,
     url: session.url,
+    data: order,
   });
 });
 
@@ -89,6 +89,41 @@ export const getOrdersControllers = asyncHandler(async (req, res) => {
     success: true,
     message: 'Orders found',
     data: orders,
+  });
+});
+
+// get order by Order ID
+export const getOrderByIdControllers = asyncHandler(async (req, res) => {
+  const order = await OrderModal.findById(req.params.id);
+  if (!order) {
+    throw new Error('Order not found');
+  }
+  res.json({
+    success: true,
+    message: 'Order found',
+    data: order,
+  });
+});
+
+// update order by Order ID
+
+export const updateOrderControllers = asyncHandler(async (req, res) => {
+  const order = await OrderModal.findByIdAndUpdate(
+    req.params.id,
+    {
+      status: req.body.status,
+    },
+    {
+      new: true,
+    }
+  );
+  if (!order) {
+    throw new Error('Order not found');
+  }
+  res.json({
+    success: true,
+    message: 'Order updated',
+    data: order,
   });
 });
 

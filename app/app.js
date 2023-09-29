@@ -9,10 +9,12 @@ import {
 
 // Routers import
 import { stripeWebhookControllers } from '../controllers/stripeControllers.js';
+
 import {
   brandRouter,
   categoryRouter,
   colorRouter,
+  couponRouter,
   orderRouter,
   productRouter,
   reviewRouter,
@@ -44,6 +46,7 @@ app.use(`${version}/brands`, brandRouter);
 app.use(`${version}/colors`, colorRouter);
 app.use(`${version}/reviews`, reviewRouter);
 app.use(`${version}/orders`, orderRouter);
+app.use(`${version}/coupons`, couponRouter);
 
 // global route
 app.use(`${version}/success`, (req, res) => {
