@@ -9,6 +9,8 @@ export const Schema = mongoose.Schema;
 export const Modal = (modalName, Schema) => mongoose.model(modalName, Schema);
 
 export const stripe = new Stripe(process.env.STRIPE_KEY);
+export const endpointSecret =
+  'whsec_2e06f4ae747b60b5ee4a5df0a3d140feab02764737c0a34752c78693b8501eaf';
 
 export function generateRandomOrderNumber(length) {
   const generatedOrderNumbers = new Set();

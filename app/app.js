@@ -7,8 +7,8 @@ import {
   websiteNotFound,
 } from '../middlewares/globalErrHandler.js';
 
-import OrderModal from '../model/OrderModal.js';
 // Routers import
+import OrderModal from '../model/OrderModal.js';
 import {
   brandRouter,
   categoryRouter,
@@ -18,22 +18,14 @@ import {
   reviewRouter,
   userRouter,
 } from '../routes/index.js';
-import { stripe } from '../utils/helper.js';
+import { endpointSecret, stripe } from '../utils/helper.js';
 
 dotenv.config();
 // db connect
 dbConnect();
 const app = express();
 
-//pass incoming data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 //Stripe webhooks
-
-const endpointSecret =
-  'whsec_2e06f4ae747b60b5ee4a5df0a3d140feab02764737c0a34752c78693b8501eaf';
-
 app.post(
   '/webhook',
   express.raw({ type: 'application/json' }),
@@ -51,8 +43,6 @@ app.post(
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-
-      console.log(session);
 
       const { orderId } = session.metadata;
       const paymentStatus = session.payment_status;
@@ -78,6 +68,10 @@ app.post(
     response.send();
   }
 );
+
+//pass incoming data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 export const version = '/api/v1';

@@ -61,8 +61,9 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
 
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
+    customer_email: userExists?.email,
     metadata: {
-      orderId: JSON.stringify(order?._id),
+      orderId: JSON.stringify(order._id),
     },
     mode: 'payment',
     success_url: `${req.protocol}://${req.headers.host}${version}/success`,
@@ -73,15 +74,12 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   userExists.orders.push(order._id);
   await userExists.save();
 
-  res.send({
+  res.json({
+    success: true,
+    message: 'Order created successfully',
+    data: order,
     url: session.url,
   });
-  // res.json({
-  //   success: true,
-  //   message: 'Order created successfully',
-  //   data: order,
-  //   User: userExists,
-  // });
 });
 
 // get all orders per user
