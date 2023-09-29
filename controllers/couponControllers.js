@@ -14,7 +14,7 @@ export const createCouponControllers = asyncHandler(async (req, res) => {
   }
   //create coupon
   const newCoupon = await CouponModal.create({
-    code,
+    code: code?.toUpperCase(),
     startDate,
     endDate,
     discount,
@@ -25,5 +25,14 @@ export const createCouponControllers = asyncHandler(async (req, res) => {
     success: true,
     message: 'Coupon created successfully',
     data: newCoupon,
+  });
+});
+
+export const getAllCouponsControllers = asyncHandler(async (req, res) => {
+  const coupons = await CouponModal.find();
+  res.json({
+    success: true,
+    message: 'Coupons found',
+    data: coupons,
   });
 });

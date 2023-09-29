@@ -1,11 +1,32 @@
 import asyncHandler from 'express-async-handler';
 
 import { version } from '../app/app.js';
-import { OrderModal, Product, UserModal } from '../model/index.js';
+import { CouponModal, OrderModal, Product, UserModal } from '../model/index.js';
 import { stripe } from '../utils/helper.js';
 
 export const createOrderControllers = asyncHandler(async (req, res) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
+
+  const { coupon } = req?.query;
+
+  //------------ check if coupon exists ----------
+  if (!coupon) {
+    throw new Error('Coupon not found');
+  }
+  const couponExists = await CouponModal.findOne({
+    code: coupon?.toUpperCase(),
+  });
+  if (!couponExists) {
+    throw new Error('Coupon not found');
+  }
+  if (couponExists?.isExpired) {
+    throw new Error('Coupon expired');
+  }
+  if (couponExists?.daysLeft < 0) {
+    throw new Error('Coupon expired');
+  }
+  const discount = couponExists?.discount / 100;
+  // ---------- Coupon End ----------
 
   // Check user exists (if not, throw error)
   const userExists = await UserModal.findById(req.userAuthId);
@@ -23,7 +44,7 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   const order = await OrderModal.create({
     orderItems,
     shippingAddress,
-    totalPrice,
+    totalPrice: couponExists ? totalPrice - totalPrice * discount : totalPrice,
     user: req.userAuthId,
   });
 
