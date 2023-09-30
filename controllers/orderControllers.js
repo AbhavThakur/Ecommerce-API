@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler';
 
-import { version } from '../app/app.js';
 import { CouponModal, OrderModal, Product, UserModal } from '../model/index.js';
 import { stripe } from '../utils/helper.js';
 
@@ -87,8 +86,8 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
       orderId: JSON.stringify(order._id),
     },
     mode: 'payment',
-    success_url: `${req.protocol}://${req.headers.host}${version}/success`,
-    cancel_url: `${req.protocol}://${req.headers.host}${version}/cancel`,
+    success_url: `${req.protocol}://${req.headers.host}/success`,
+    cancel_url: `${req.protocol}://${req.headers.host}/failure`,
   });
 
   //push order Id to user and save
