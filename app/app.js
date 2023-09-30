@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import dbConnect from '../config/dbConnect.js';
 import {
@@ -26,7 +27,8 @@ dotenv.config();
 // db connect
 dbConnect();
 const app = express();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 //Stripe webhooks
 app.post(
   '/webhook',
@@ -37,11 +39,8 @@ app.post(
 //pass incoming data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
-  res.sendFile(path.join('public', 'index.html'));
-});
 // routes
 export const version = '/api/v1';
 app.use(`${version}/users`, userRouter);
@@ -54,11 +53,12 @@ app.use(`${version}/orders`, orderRouter);
 app.use(`${version}/coupons`, couponRouter);
 
 // global route
-app.use(`${version}/success`, (req, res) => {
-  res.send('success');
+app.use('/:fileName', (req, res) => {
+  let fileName = req.params.fileName;
+  res.sendFile(path.join(__dirname, 'public', fileName + '.html'));
 });
-app.use(`${version}/cancel`, (req, res) => {
-  res.send('cancel');
+app.use('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 // error handler
