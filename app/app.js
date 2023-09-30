@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
+import path from 'path';
 
 import dbConnect from '../config/dbConnect.js';
 import {
@@ -36,7 +37,11 @@ app.post(
 //pass incoming data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
+app.use('/', (req, res) => {
+  res.sendFile(path.join('public', 'index.html'));
+});
 // routes
 export const version = '/api/v1';
 app.use(`${version}/users`, userRouter);
@@ -54,10 +59,6 @@ app.use(`${version}/success`, (req, res) => {
 });
 app.use(`${version}/cancel`, (req, res) => {
   res.send('cancel');
-});
-
-app.use('/', (req, res) => {
-  res.send('hello world');
 });
 
 // error handler

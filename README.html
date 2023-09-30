@@ -42,19 +42,523 @@
     <body class="vscode-body vscode-light">
         <h1 id="ecommerce-api">Ecommerce-API</h1>
 <h2 id="description">Description</h2>
-<p>[Provide a brief description of your project.]</p>
+<h2 id="table-of-contents">Table of Contents</h2>
 <h2 id="installation">Installation</h2>
 <p>npm install</p>
 <h2 id="usage">Usage</h2>
 <p>npm run server</p>
-<h2 id="examples">Examples</h2>
-<p>[Include any examples or screenshots that showcase your project.]</p>
-<h2 id="contributing">Contributing</h2>
-<p>[Include guidelines or instructions on how others can contribute to your project, if applicable.]</p>
-<h2 id="license">License</h2>
-<p>[Specify the license under which your project is distributed.]</p>
-<h2 id="contact">Contact</h2>
-<p>[Provide contact information or instructions on how to reach you.]</p>
+<h2 id="docs">Docs</h2>
+<p>You can find the API documentation here:- <a href="https://documenter.getpostman.com/view/10879422/2s9YJaZ4QY#f985dcb8-59d7-42a6-8d05-8d49a6536c5e">https://documenter.getpostman.com/view/10879422/2s9YJaZ4QY#f985dcb8-59d7-42a6-8d05-8d49a6536c5e</a></p>
+<h1 id="nodejs-ecommerce-api">nodejs-ecommerce-api</h1>
+<!--- If we have only one group/collection, then no need for the "ungrouped" heading -->
+<h2 id="endpoints">Endpoints</h2>
+<ul>
+<li><a href="#ecommerce-api">Ecommerce-API</a>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#docs">Docs</a></li>
+</ul>
+</li>
+<li><a href="#nodejs-ecommerce-api">nodejs-ecommerce-api</a>
+<ul>
+<li><a href="#endpoints">Endpoints</a></li>
+<li><a href="#users">Users</a>
+<ul>
+<li><a href="#1-register">1. register</a></li>
+<li><a href="#2-login">2. login</a></li>
+<li><a href="#3-get-profile">3. GET Profile</a></li>
+<li><a href="#4-update-shipping-address">4. Update Shipping Address</a></li>
+<li><a href="#5-success">5. Success</a></li>
+</ul>
+</li>
+<li><a href="#products">Products</a>
+<ul>
+<li><a href="#1-create-product">1. Create Product</a></li>
+<li><a href="#2-all-products-with-filter">2. All products with filter</a></li>
+<li><a href="#3-product-by-id">3. Product by ID</a></li>
+<li><a href="#4-update-product-by-id">4. Update Product by ID</a></li>
+<li><a href="#5-delete-product-by-id">5. Delete Product by ID</a></li>
+</ul>
+</li>
+<li><a href="#categories">Categories</a>
+<ul>
+<li><a href="#1-create-category">1. Create category</a></li>
+<li><a href="#2-category-by-id">2. Category by ID</a></li>
+<li><a href="#3-deletecategory-by-id">3. DeleteCategory by ID</a></li>
+<li><a href="#4-update-category-by-id">4. Update Category by ID</a></li>
+<li><a href="#5-all-categories">5. All Categories</a></li>
+</ul>
+</li>
+<li><a href="#brands">Brands</a>
+<ul>
+<li><a href="#1-create-brands">1. Create Brands</a></li>
+<li><a href="#2-brand-by-id">2. Brand by ID</a></li>
+<li><a href="#3-all-brands">3. All Brands</a></li>
+<li><a href="#4-delete-brands-by-id">4. Delete brands by ID</a></li>
+<li><a href="#5-update-brands-by-id">5. Update Brands by ID</a></li>
+</ul>
+</li>
+<li><a href="#colors">Colors</a>
+<ul>
+<li><a href="#1-create-colors">1. Create Colors</a></li>
+<li><a href="#2-color-by-id">2. Color by ID</a></li>
+<li><a href="#3-all-colors">3. All Colors</a></li>
+<li><a href="#4-delete-color-by-id">4. Delete Color by ID</a></li>
+<li><a href="#5-update-color-by-id">5. Update Color by ID</a></li>
+</ul>
+</li>
+<li><a href="#reviews">Reviews</a>
+<ul>
+<li><a href="#1-create-review">1. Create Review</a></li>
+<li><a href="#2-review-by-productid">2. Review by productID</a></li>
+<li><a href="#3-all-reviews">3. All reviews</a></li>
+<li><a href="#4-delete-review-by-id">4. Delete review by ID</a></li>
+<li><a href="#5-update-review-by-id">5. Update Review by ID</a></li>
+</ul>
+</li>
+<li><a href="#orders">Orders</a>
+<ul>
+<li><a href="#1-create-order">1. Create Order</a></li>
+<li><a href="#2-all-order-for-specific-user">2. All order for specific user</a></li>
+<li><a href="#3-order-status">3. Order Status</a></li>
+<li><a href="#4-delete-order-by-id">4. Delete Order by ID</a></li>
+<li><a href="#5-single-order-by-orderid">5. Single order by OrderID</a></li>
+<li><a href="#6-update-order-by-orderid">6. Update order by OrderID</a></li>
+</ul>
+</li>
+<li><a href="#coupons">Coupons</a>
+<ul>
+<li><a href="#1-create-coupons">1. Create Coupons</a></li>
+<li><a href="#2-all-coupons">2. All Coupons</a></li>
+<li><a href="#3-single-coupon-by-couponid">3. Single coupon by couponID</a></li>
+<li><a href="#4-update-coupon">4. Update Coupon</a></li>
+<li><a href="#5-delete-coupon-by-id">5. Delete Coupon by ID</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="users">Users</h2>
+<h3 id="1-register">1. register</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/users/register
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;fullName&quot;</span>:<span class="hljs-string">&quot;Rohan&quot;</span>,
+  <span class="hljs-string">&quot;email&quot;</span>:<span class="hljs-string">&quot;Rohan@gmail.com&quot;</span>,
+  <span class="hljs-string">&quot;password&quot;</span>:<span class="hljs-string">&quot;12345&quot;</span>
+}
+</code></pre>
+<h3 id="2-login">2. login</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/users/login
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;email&quot;</span>:<span class="hljs-string">&quot;Rohan@gmail.com&quot;</span>,
+  <span class="hljs-string">&quot;password&quot;</span>:<span class="hljs-string">&quot;12345&quot;</span>
+}
+</code></pre>
+<h3 id="3-get-profile">3. GET Profile</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/users/profile
+</code></pre>
+<h3 id="4-update-shipping-address">4. Update Shipping Address</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/users/update/shipping
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;fullName&quot;</span>:<span class="hljs-string">&quot;hello&quot;</span>,
+  <span class="hljs-string">&quot;email&quot;</span>:<span class="hljs-string">&quot;Nate&quot;</span>,
+  <span class="hljs-string">&quot;address&quot;</span>:<span class="hljs-string">&quot;Himachal&quot;</span>,
+  <span class="hljs-string">&quot;city&quot;</span>:<span class="hljs-string">&quot;Mandi&quot;</span>,
+  <span class="hljs-string">&quot;postalCode&quot;</span>:<span class="hljs-string">&quot;173026&quot;</span>,
+  <span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;India&quot;</span>,
+  <span class="hljs-string">&quot;province&quot;</span>:<span class="hljs-string">&quot;Near Village&quot;</span>
+}
+</code></pre>
+<h3 id="5-success">5. Success</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/success
+</code></pre>
+<h2 id="products">Products</h2>
+<h3 id="1-create-product">1. Create Product</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: FORMDATA
+URL: {{url}}/{{version}}/products
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-all-products-with-filter">2. All products with filter</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/products
+</code></pre>
+<h3 id="3-product-by-id">3. Product by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/products/650eba6ebb5cc29d96d74651
+</code></pre>
+<h3 id="4-update-product-by-id">4. Update Product by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/products/650eb290fa3559e0631e899c
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+    <span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">1200</span>,
+    <span class="hljs-string">&quot;totalQty&quot;</span>: <span class="hljs-number">54</span>
+}
+</code></pre>
+<h3 id="5-delete-product-by-id">5. Delete Product by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type: RAW
+URL: {{url}}/{{version}}/products/650eb290fa3559e0631e899c/delete
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">1200</span>,
+  <span class="hljs-string">&quot;totalQty&quot;</span>: <span class="hljs-number">54</span>
+}
+</code></pre>
+<h2 id="categories">Categories</h2>
+<h3 id="1-create-category">1. Create category</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: FORMDATA
+URL: {{url}}/{{version}}/categories
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>Women</td>
+<td></td>
+</tr>
+<tr>
+<td>file</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-category-by-id">2. Category by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/categories/650f32305469c241f8a7750f
+</code></pre>
+<h3 id="3-deletecategory-by-id">3. DeleteCategory by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/categories/65131d6abbffadaa6791e5d0/delete
+</code></pre>
+<h3 id="4-update-category-by-id">4. Update Category by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/categories/650f32305469c241f8a7750f
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Mens&quot;</span>
+}
+</code></pre>
+<h3 id="5-all-categories">5. All Categories</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/categories
+</code></pre>
+<h2 id="brands">Brands</h2>
+<h3 id="1-create-brands">1. Create Brands</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/brands
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Addidas&quot;</span>
+}
+</code></pre>
+<h3 id="2-brand-by-id">2. Brand by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/brands/650f4540018e414d401c9ed1
+</code></pre>
+<h3 id="3-all-brands">3. All Brands</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/brands
+</code></pre>
+<h3 id="4-delete-brands-by-id">4. Delete brands by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/brands/650f4540018e414d401c9ed1/delete
+</code></pre>
+<h3 id="5-update-brands-by-id">5. Update Brands by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/categories/650f32305469c241f8a7750f
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Mens&quot;</span>
+}
+</code></pre>
+<h2 id="colors">Colors</h2>
+<h3 id="1-create-colors">1. Create Colors</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/colors
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;black&quot;</span>
+}
+</code></pre>
+<h3 id="2-color-by-id">2. Color by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/colors/651023b879157d8111c2b0c5
+</code></pre>
+<h3 id="3-all-colors">3. All Colors</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/colors
+</code></pre>
+<h3 id="4-delete-color-by-id">4. Delete Color by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/colors/651023b879157d8111c2b0c5/delete
+</code></pre>
+<h3 id="5-update-color-by-id">5. Update Color by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/colors/651023b879157d8111c2b0c5
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;blue&quot;</span>
+}
+</code></pre>
+<h2 id="reviews">Reviews</h2>
+<h3 id="1-create-review">1. Create Review</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/reviews/650eba6ebb5cc29d96d74651
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;message&quot;</span>:<span class="hljs-string">&quot;Good looking&quot;</span>,
+  <span class="hljs-string">&quot;rating&quot;</span>: <span class="hljs-number">5</span>
+}
+</code></pre>
+<h3 id="2-review-by-productid">2. Review by productID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/colors/651023b879157d8111c2b0c5
+</code></pre>
+<h3 id="3-all-reviews">3. All reviews</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/reviews
+</code></pre>
+<h3 id="4-delete-review-by-id">4. Delete review by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/reviews/65119d6b339cc1ebda88ab74/delete
+</code></pre>
+<h3 id="5-update-review-by-id">5. Update Review by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/colors/651023b879157d8111c2b0c5
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+    <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;blue&quot;</span>
+}
+</code></pre>
+<h2 id="orders">Orders</h2>
+<h3 id="1-create-order">1. Create Order</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/orders
+</code></pre>
+<p><strong><em>Query params:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coupon</td>
+<td>DIWALI</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;orderItems&quot;</span>:[
+    {
+      <span class="hljs-string">&quot;_id&quot;</span>:<span class="hljs-string">&quot;6516b7cc1126d55f725ce5c3&quot;</span>,
+      <span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Jeans&quot;</span>,
+      <span class="hljs-string">&quot;description&quot;</span>:<span class="hljs-string">&quot;best for parties&quot;</span>,
+      <span class="hljs-string">&quot;totalQty&quot;</span>: <span class="hljs-number">100</span>,
+      <span class="hljs-string">&quot;quantity&quot;</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">&quot;price&quot;</span>: <span class="hljs-number">1100</span>
+    }
+    ],
+    <span class="hljs-string">&quot;totalPrice&quot;</span>:<span class="hljs-number">2200</span>
+}
+</code></pre>
+<h3 id="2-all-order-for-specific-user">2. All order for specific user</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/orders
+</code></pre>
+<h3 id="3-order-status">3. Order Status</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/orders/sales/status
+</code></pre>
+<h3 id="4-delete-order-by-id">4. Delete Order by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/orders/651323edb63e134a636f2841/delete
+</code></pre>
+<h3 id="5-single-order-by-orderid">5. Single order by OrderID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/orders/6516c08f5ca619b5d6c270bf
+</code></pre>
+<h3 id="6-update-order-by-orderid">6. Update order by OrderID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/orders/update/6516c08f5ca619b5d6c270bf
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;status&quot;</span>:<span class="hljs-string">&quot;processing&quot;</span>
+}
+</code></pre>
+<h2 id="coupons">Coupons</h2>
+<h3 id="1-create-coupons">1. Create Coupons</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: POST
+Type: RAW
+URL: {{url}}/{{version}}/coupons
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;code&quot;</span>:<span class="hljs-string">&quot;DIWALI&quot;</span>,
+  <span class="hljs-string">&quot;discount&quot;</span>: <span class="hljs-number">50</span>,
+  <span class="hljs-string">&quot;startDate&quot;</span>:<span class="hljs-string">&quot;09-30-2023&quot;</span>,
+  <span class="hljs-string">&quot;endDate&quot;</span>:<span class="hljs-string">&quot;10-29-2023&quot;</span>
+}
+</code></pre>
+<h3 id="2-all-coupons">2. All Coupons</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/coupons
+</code></pre>
+<h3 id="3-single-coupon-by-couponid">3. Single coupon by couponID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: GET
+Type:
+URL: {{url}}/{{version}}/coupons/65171318b90e6d7d8403068b
+</code></pre>
+<h3 id="4-update-coupon">4. Update Coupon</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: PUT
+Type: RAW
+URL: {{url}}/{{version}}/coupons/update/65171318b90e6d7d8403068b
+</code></pre>
+<p><strong><em>Body:</em></strong></p>
+<pre><code class="language-js">{
+  <span class="hljs-string">&quot;code&quot;</span>:<span class="hljs-string">&quot;NEW-YEAR&quot;</span>
+}
+</code></pre>
+<h3 id="5-delete-coupon-by-id">5. Delete Coupon by ID</h3>
+<p><strong><em>Endpoint:</em></strong></p>
+<pre><code class="language-bash">Method: DELETE
+Type:
+URL: {{url}}/{{version}}/coupons/delete/65171318b90e6d7d8403068b
+</code></pre>
+<hr>
+<p><a href="#nodejs-ecommerce-api">Back to top</a></p>
 
         
         
