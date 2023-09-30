@@ -7,14 +7,20 @@ import {
   getColorByIdControllers,
   updateColorByIdControllers,
 } from '../controllers/colorControllers.js';
+import isAdmin from '../middlewares/isAdmin.js';
 import { isloggedIn } from '../middlewares/isLoggedIn.js';
 
 const colorRouter = express.Router();
 
-colorRouter.post('/', isloggedIn, createColorControllers);
+colorRouter.post('/', isloggedIn, isAdmin, createColorControllers);
 colorRouter.get('/', getAllColorsControllers);
 colorRouter.get('/:id', getColorByIdControllers);
-colorRouter.put('/:id', isloggedIn, updateColorByIdControllers);
-colorRouter.delete('/:id/delete', isloggedIn, deleteColorByIdControllers);
+colorRouter.put('/:id', isloggedIn, isAdmin, updateColorByIdControllers);
+colorRouter.delete(
+  '/:id/delete',
+  isloggedIn,
+  isAdmin,
+  deleteColorByIdControllers
+);
 
 export default colorRouter;

@@ -43,7 +43,7 @@ export const createOrderControllers = asyncHandler(async (req, res) => {
   // create order
   const order = await OrderModal.create({
     orderItems,
-    shippingAddress,
+    shippingAddress: userExists?.shippingAddress,
     totalPrice: couponExists ? totalPrice - totalPrice * discount : totalPrice,
     user: req.userAuthId,
   });
@@ -149,6 +149,7 @@ export const updateOrderControllers = asyncHandler(async (req, res) => {
 });
 
 // delete order by Order ID
+// access private/admin
 export const deleteOrderControllers = asyncHandler(async (req, res) => {
   const order = await OrderModal.findByIdAndDelete(req.params.id);
   if (!order) {
@@ -158,5 +159,43 @@ export const deleteOrderControllers = asyncHandler(async (req, res) => {
     success: true,
     message: 'Order deleted',
     data: order,
+  });
+});
+
+// get order status
+// access private/admin
+export const getOrderStatusControllers = asyncHandler(async (req, res) => {
+  const getOrderDetails = await OrderModal.aggregate([
+    {
+      $group: {
+        _id: null,
+        minimumPrice: { $min: '$totalPrice' },
+        maximumPrice: { $max: '$totalPrice' },
+        totalSales: { $sum: '$totalPrice' },
+        averagePrice: { $avg: '$totalPrice' },
+      },
+    },
+  ]);
+  const todaySales = await OrderModal.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: new Date(new Date().setHours(0, 0, 0, 0)) },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalSales: { $sum: '$totalPrice' },
+      },
+    },
+  ]);
+
+  console.log(new Date(new Date().setHours(0, 0, 0, 0)));
+
+  res.json({
+    success: true,
+    message: 'Order status found',
+    data: getOrderDetails,
+    todaySales,
   });
 });
