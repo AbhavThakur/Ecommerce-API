@@ -21,8 +21,8 @@ const storage = new CloudinaryStorage({
 });
 
 //init multer with storage engine
-const upload = multer({
+const categoryUpload = multer({
   storage,
 });
 
-export default upload;
+export default categoryUpload;

@@ -10,6 +10,7 @@ export const createCategoryControllers = asyncHandler(async (req, res) => {
   const newCategory = await Category.create({
     name: name,
     user: req.userAuthId,
+    image: req.file.path,
   });
   res.status(201).json({
     status: 'success',
@@ -19,6 +20,8 @@ export const createCategoryControllers = asyncHandler(async (req, res) => {
   });
 });
 
+// get all categories
+// access public
 export const getAllCategoriesControllers = asyncHandler(async (req, res) => {
   const categories = await Category.find();
   res.status(200).json({
@@ -30,6 +33,8 @@ export const getAllCategoriesControllers = asyncHandler(async (req, res) => {
   });
 });
 
+// get category by ID
+// access public
 export const getCategoryByIdControllers = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
   if (!category) {
